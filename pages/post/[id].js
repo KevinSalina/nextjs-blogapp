@@ -5,6 +5,7 @@ import {
 } from '@chakra-ui/react'
 import ReactMarkdown from "react-markdown"
 
+import prisma from "../../lib/prisma"
 
 const Post = (props) => {
   let title = props.title
@@ -24,18 +25,21 @@ const Post = (props) => {
 }
 
 export async function getServerSideProps(context) {
-  const post = {
-    id: 1,
-    title: "Prisma is the perfect ORM for Next.js",
-    content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-    published: false,
-    author: {
-      name: "Nikolas Burk",
-      email: "burk@prisma.io",
+
+  console.log(context.params)
+
+  const singlePost = await prisma.post.findUnique({
+    where: {
+      id: Number(context.params?.id) || -1
     },
-  }
+    include: {
+      author: {
+        select: { name: true }
+      }
+    }
+  })
   return {
-    props: post,
+    props: singlePost,
   }
 }
 
