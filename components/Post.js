@@ -26,12 +26,12 @@ const Post = ({ post }) => {
   return (
     <LinkBox mt={5} as="article" w='full' p={5} borderWidth='1px' rounded='md' bg={bg} color={color} _hover={{ bg: hoverColor, cursor: 'pointer' }} boxShadow="base" transition='all .2s ease'>
       <Box mb={3}>
-        <LinkOverlay as={NextLink} href={`/post/${post.id}`}>
+        <LinkOverlay as={NextLink} href={`/post/${post.id}`} pass>
           <Heading as='h3' size='lg'>{post.title}</Heading>
         </LinkOverlay>
         <Text fontSize='sm'>{authorName}</Text>
       </Box>
-      <ReactMarkdown components={ChakraUIRenderer(newTheme)} >
+      <ReactMarkdown components={ChakraUIRenderer()}>
         {post.content}
       </ReactMarkdown>
     </LinkBox>

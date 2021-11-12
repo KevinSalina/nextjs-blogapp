@@ -6,7 +6,6 @@ import {
 import ReactMarkdown from "react-markdown"
 
 
-
 const Post = (props) => {
   let title = props.title
   if (!props.published) {
@@ -40,4 +39,4 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default Post
+export default Post;
