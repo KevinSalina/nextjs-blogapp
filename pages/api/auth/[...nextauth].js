@@ -12,5 +12,10 @@ export default NextAuth({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET
     })
-  ]
+  ],
+  callbacks: {
+    session: async (session, user) => {
+      return Promise.resolve(session)
+    }
+  }
 })

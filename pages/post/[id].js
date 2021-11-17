@@ -1,17 +1,54 @@
 import React from "react"
 import {
   Heading,
-  Text
+  Text,
+  Button
 } from '@chakra-ui/react'
 import ReactMarkdown from "react-markdown"
+import axios from "axios"
+import { useSession } from 'next-auth/react'
+import Router from "next/router"
 
 import prisma from "../../lib/prisma"
 
-const Post = (props) => {
+const PostPage = (props) => {
+
+  const { data: session, status } = useSession()
+
   let title = props.title
   if (!props.published) {
     title = `${title} (Draft)`
   }
+
+  console.log(props)
+
+  const publishPost = async (id) => {
+    try {
+      const results = await axios.put(`/api/publish/${id}`)
+      console.log(results)
+      Router.push('/')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const deletePost = async (id) => {
+    try {
+      const result = await axios.delete(`/api/post/${id}`)
+      console.log(result)
+      Router.push('/')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  if (status === 'Loading') {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+
+  const postBelongsToUser = session?.user?.id === props.authorId
 
   return (
     <>
@@ -20,13 +57,22 @@ const Post = (props) => {
       </Heading>
       <Text>By {props?.author?.name || 'Unknown Author'}</Text>
       <ReactMarkdown>{props.content}</ReactMarkdown>
+      {!props.published && status === 'authenticated' && postBelongsToUser && (
+        <Button onClick={() => publishPost(props.id)}>
+          Publish
+        </Button>
+      )}
+      {status === 'authenticated' & postBelongsToUser && (
+        <Button onClick={() => deletePost(props.id)}>
+          Delete
+        </Button>
+      )}
+
     </>
   )
 }
 
 export async function getServerSideProps(context) {
-
-  console.log(context.params)
 
   const singlePost = await prisma.post.findUnique({
     where: {
@@ -39,8 +85,8 @@ export async function getServerSideProps(context) {
     }
   })
   return {
-    props: singlePost,
+    props: singlePost
   }
 }
 
-export default Post;
+export default PostPage;

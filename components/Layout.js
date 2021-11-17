@@ -13,7 +13,7 @@ export const Layout = ({ children }) => {
       <Container
         as='main'
         maxW='container.xl'
-        pt='50px'
+        py='50px'
       >
         <Flex
           w='full'

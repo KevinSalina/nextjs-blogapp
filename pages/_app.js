@@ -6,7 +6,7 @@ import { Layout } from '../components/Layout'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <SessionProvider>
+    <SessionProvider session={pageProps.session}>
       <ChakraProvider resetCSS theme={theme}>
         <Layout>
           <Component {...pageProps} />

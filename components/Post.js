@@ -15,10 +15,6 @@ import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 const Post = ({ post }) => {
   const authorName = post.author ? post.author.name : 'Unkown author'
 
-  const newTheme = {
-
-  }
-
   const bg = useColorModeValue('gray.50', 'gray.700')
   const color = useColorModeValue('black', 'white')
   const hoverColor = useColorModeValue('gray.200', 'gray.600')

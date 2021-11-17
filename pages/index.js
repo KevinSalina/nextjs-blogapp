@@ -4,11 +4,14 @@ import {
   VStack,
   Box
 } from '@chakra-ui/react'
+import Router, { withRouter } from 'next/router'
 
 import Post from "../components/Post"
 import prisma from '../lib/prisma'
 
-export default function Home(props) {
+const Home = (props) => {
+
+  console.log(props.router)
 
   return (
     <>
@@ -37,3 +40,4 @@ export async function getStaticProps(conext) {
   return { props: { feed } }
 }
 
+export default withRouter(Home)

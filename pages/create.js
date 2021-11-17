@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Router from 'next/router'
+import axios from 'axios'
 
 import {
   FormControl,
@@ -17,8 +18,18 @@ export default function Create() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  const handleSubmit = async (e) => {
 
+  const handleSubmit = async (e) => {
+    try {
+      const data = { title, content }
+      const results = await axios.post('/api/post', data)
+      console.log(results)
+      Router.push({
+        pathname: '/drafts',
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -41,6 +52,7 @@ export default function Create() {
       </VStack>
       <Button
         isDisabled={!title || !content}
+        onClick={handleSubmit}
       >
         Create
       </Button>
