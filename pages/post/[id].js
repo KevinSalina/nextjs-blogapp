@@ -6,6 +6,7 @@ import {
   HStack
 } from '@chakra-ui/react'
 import ReactMarkdown from "react-markdown"
+import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import axios from "axios"
 import { useSession } from 'next-auth/react'
 import Router from "next/router"
@@ -58,7 +59,7 @@ const PostPage = (props) => {
         {title}
       </Heading>
       <Text>By {props?.author?.name || 'Unknown Author'}</Text>
-      <ReactMarkdown>{props.content}</ReactMarkdown>
+      <ReactMarkdown components={ChakraUIRenderer()}>{props.content}</ReactMarkdown>
       <HStack>
         {!props.published && status === 'authenticated' && postBelongsToUser && (
           <Button onClick={() => publishPost(props.id)}>
