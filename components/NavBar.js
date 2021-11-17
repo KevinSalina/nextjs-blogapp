@@ -1,10 +1,17 @@
 import React from 'react'
+import router from 'next/link'
+import { useRouter } from 'next/router'
+import { signIn, signOut, useSession } from 'next-auth/react'
+
 import {
   Button,
   Flex,
   HStack,
   Container,
+  Center,
+  Spinner,
   Box,
+  Text,
   IconButton,
   useColorMode,
   useColorMOdeValue
@@ -12,11 +19,16 @@ import {
 import NextLink from 'next/link'
 
 import { DarkModeSwitch } from './DarkModeSwitch'
+import { AtSignIcon } from '@chakra-ui/icons'
 
-const NavLink = ({ href, children }) => {
+const NavLink = ({ href, children, path }) => {
+
+  const router = useRouter()
+  const isActive = (pathname) => router.asPath === pathname
+
   return (
     <NextLink href={href} passHref>
-      <Button as='a' variant='ghost'>
+      <Button as='a' variant='ghost' bg={isActive(path) ? 'gray.100' : null}>
         {children}
       </Button>
     </NextLink>
@@ -24,6 +36,9 @@ const NavLink = ({ href, children }) => {
 }
 
 const NavBar = () => {
+
+  const { data: session, status } = useSession()
+
   return (
     <Flex
       as='nav'
@@ -45,11 +60,42 @@ const NavBar = () => {
           justifyContent='space-between'
         >
           <HStack>
-            <NavLink href='/'>
-              Home
+            <NavLink href='/' path='/'>
+              Feed
             </NavLink>
+            {session ?
+              <NavLink href='/drafts' path='/drafts'>
+                My Drafts
+              </NavLink>
+              :
+              null
+            }
+
           </HStack>
-          <DarkModeSwitch />
+          <HStack>
+            {status === 'loading' ? <Spinner /> : null}
+            {session ?
+              <>
+                <Text>
+                  {session.user.name}
+                </Text>
+                <Text>
+                  {session.user.email}
+                </Text>
+                <NavLink href='/create' path='/create'>
+                  New Post
+                </NavLink>
+                <Button variant='ghost' onClick={() => signOut('github')}>
+                  Log out
+                </Button>
+              </>
+              :
+              <Button variant='ghost' onClick={() => signIn()}>
+                Log In
+              </Button>
+            }
+            <DarkModeSwitch />
+          </HStack>
         </Flex>
       </Container>
     </Flex>
