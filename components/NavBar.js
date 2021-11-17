@@ -90,9 +90,10 @@ const NavBar = () => {
                 </Button>
               </>
               :
-              <Button variant='ghost' onClick={() => signIn()}>
+              <NavLink href='/auth/signin' path='/auth/signin'>
                 Log In
-              </Button>
+              </NavLink>
+
             }
             <DarkModeSwitch />
           </HStack>

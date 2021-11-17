@@ -34,23 +34,24 @@ model User {
 }
 
 model Account {
-  id                 String   @id @default(cuid())
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
-  user               User     @relation(fields: [userId], references: [id])
-  userId             Int
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @default(now())
+  id                       String   @id @default(cuid())
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token_expires_in String?
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  oauth_token_secret       String?
+  oauth_token              String?
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   Int
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @default(now())
 
   @@unique([provider, providerAccountId])
 }
@@ -59,7 +60,7 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
