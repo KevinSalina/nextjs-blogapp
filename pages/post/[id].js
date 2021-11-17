@@ -2,12 +2,14 @@ import React from "react"
 import {
   Heading,
   Text,
-  Button
+  Button,
+  HStack
 } from '@chakra-ui/react'
 import ReactMarkdown from "react-markdown"
 import axios from "axios"
 import { useSession } from 'next-auth/react'
 import Router from "next/router"
+import NextLink from 'next/link'
 
 import prisma from "../../lib/prisma"
 
@@ -57,16 +59,23 @@ const PostPage = (props) => {
       </Heading>
       <Text>By {props?.author?.name || 'Unknown Author'}</Text>
       <ReactMarkdown>{props.content}</ReactMarkdown>
-      {!props.published && status === 'authenticated' && postBelongsToUser && (
-        <Button onClick={() => publishPost(props.id)}>
-          Publish
-        </Button>
-      )}
-      {status === 'authenticated' & postBelongsToUser && (
-        <Button onClick={() => deletePost(props.id)}>
-          Delete
-        </Button>
-      )}
+      <HStack>
+        {!props.published && status === 'authenticated' && postBelongsToUser && (
+          <Button onClick={() => publishPost(props.id)}>
+            Publish
+          </Button>
+        )}
+        <NextLink href={`/post/${props.id}/edit`} passHref>
+          <Button as='a'>
+            Edit
+          </Button>
+        </NextLink>
+        {status === 'authenticated' & postBelongsToUser && (
+          <Button onClick={() => deletePost(props.id)}>
+            Delete
+          </Button>
+        )}
+      </HStack>
 
     </>
   )
