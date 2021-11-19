@@ -6,16 +6,16 @@ import { PrismaClient } from '@prisma/client'
 import prisma from '../../../lib/prisma'
 import allConfigs from '../../../next.config'
 
-const enviroment = process.env.NODE_ENV || 'development'
-const { clientId, clientSecret, secret } = allConfigs[enviroment]
+// const enviroment = process.env.NODE_ENV || 'development'
+// const { clientId, clientSecret, secret } = allConfigs[enviroment]
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
-  secret: secret,
+  secret: process.env.SECRET,
   providers: [
     GitHubProvider({
-      clientId,
-      clientSecret
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     })
   ],
   callbacks: {
