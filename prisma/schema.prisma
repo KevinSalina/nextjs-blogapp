@@ -13,7 +13,7 @@ datasource db {
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
-  content   String?
+  content   String? @db.Text
   published Boolean @default(false)
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  Int?
