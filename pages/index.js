@@ -11,8 +11,6 @@ import prisma from '../lib/prisma'
 
 const Home = (props) => {
 
-  console.log(props.router)
-
   return (
     <>
       <Heading>Public Feed</Heading>
